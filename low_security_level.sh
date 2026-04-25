@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SECURITY="high" #security level
+SECURITY="low" #security level
 USER="admin" #username
 PASS="password" #current password
 
