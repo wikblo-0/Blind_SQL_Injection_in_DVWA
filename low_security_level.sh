@@ -1,3 +1,4 @@
+  GNU nano 8.7.1                                                                                                      /home/kali/scraper.sh                                                                                                                
 #!/bin/bash
 
 SECURITY="low" #security level
@@ -8,18 +9,18 @@ rm cookies.txt #removes old file with cookies
 
 #saves login cookies and login page html to local files
 curl -s -c cookies.txt \
--b "security=$SECURITY" \
-http://192.168.56.105/DVWA/login.php \
->login.html
+  -b "security=$SECURITY" \
+  http://192.168.56.105/DVWA/login.php \
+  >login.html
 
 TOKEN=$(grep -oP "name='user_token' value='\K[^']+" login.html) #saves user token variable found in login html
 PHPSESSID=$(awk '$6=="PHPSESSID" {print $7}' cookies.txt) #saves PHP session ID found in cookies
 
 #logs in using cookies and user token
 curl -s -b cookies.txt \
--b "security=$SECURITY" \
--d "username=$USER&password=$PASS&user_token=$TOKEN&Login=Login" \
-http://192.168.56.105/DVWA/login.php
+  -b "security=$SECURITY" \
+  -d "username=$USER&password=$PASS&user_token=$TOKEN&Login=Login" \
+  http://192.168.56.105/DVWA/login.php
 
 
 
