@@ -48,6 +48,7 @@ done
 }> /home/kali/sqliBlind_low1.log
 
 
+
 #Attempts to find the name of the database server version string and saves result in local log file
 {
 echo "Current security level: $SECURITY"
