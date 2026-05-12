@@ -1,4 +1,3 @@
-  GNU nano 8.7.1                                                                                                      /home/kali/scraper.sh                                                                                                                
 #!/bin/bash
 
 SECURITY="low" #security level
